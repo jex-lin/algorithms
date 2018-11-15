@@ -25,7 +25,34 @@ func main() {
 	showList(c)
 }
 
+// ref: https://leetcode.com/problems/add-two-numbers/discuss/185527/Golang-solutions
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	head := &ListNode{}
+	for prev, sum := head, 0; l1 != nil || l2 != nil || sum > 0; sum /= 10 {
+		fmt.Println("prev1: ", prev)
+		if l1 != nil {
+			sum += l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			sum += l2.Val
+			l2 = l2.Next
+		}
+
+		prev.Next = &ListNode{
+			Val: sum % 10,
+		}
+		fmt.Println("prev2: ", prev)
+		prev = prev.Next
+		fmt.Println("prev3: ", prev)
+	}
+	fmt.Println("head: ", head)
+	fmt.Println("head2: ", head.Next)
+	return head.Next
+}
+
+// My answer, not good
+func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
 	var res []ListNode
 	var carryover int
 	for {
