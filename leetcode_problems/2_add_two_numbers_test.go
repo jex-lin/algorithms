@@ -1,35 +1,47 @@
-package main
+package leetcode_problems
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 type ListNode struct {
 	Val  int
 	Next *ListNode
 }
 
-func main() {
-	a2 := ListNode{3, nil}
-	a1 := ListNode{4, &a2}
-	a0 := ListNode{2, &a1}
-	fmt.Print("l1: ")
-	showList(&a0)
+func TestAddTwoNumbers(t *testing.T) {
+	t.Log("Test 2_add_two_numbers_test")
+	list := []struct {
+		L1  ListNode
+		L2  ListNode
+		Ans ListNode
+	}{
+		{
+			ListNode{2, &ListNode{4, &ListNode{3, nil}}},
+			ListNode{5, &ListNode{6, &ListNode{4, nil}}},
+			ListNode{7, &ListNode{0, &ListNode{8, nil}}},
+		},
+	}
 
-	b2 := ListNode{4, nil}
-	b1 := ListNode{6, &b2}
-	b0 := ListNode{5, &b1}
-	fmt.Print("l2: ")
-	showList(&b0)
-
-	c := addTwoNumbers(&a0, &b0)
-	fmt.Print("result: ")
-	showList(c)
+	for _, item := range list {
+		// fmt.Print("l1: ", item.L1)
+		// showList(&item.L1)
+		// fmt.Print("l2: ", item.L2)
+		// showList(&item.L2)
+		ans := AddTwoNumbers(&item.L1, &item.L2)
+		assert.Equal(t, ans.Val, item.Ans.Val)
+		assert.Equal(t, ans.Next.Val, item.Ans.Next.Val)
+		assert.Equal(t, ans.Next.Next.Val, item.Ans.Next.Next.Val)
+	}
 }
 
 // ref: https://leetcode.com/problems/add-two-numbers/discuss/185527/Golang-solutions
-func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	head := &ListNode{}
 	for prev, sum := head, 0; l1 != nil || l2 != nil || sum > 0; sum /= 10 {
-		fmt.Println("prev1: ", prev)
 		if l1 != nil {
 			sum += l1.Val
 			l1 = l1.Next
@@ -42,17 +54,13 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		prev.Next = &ListNode{
 			Val: sum % 10,
 		}
-		fmt.Println("prev2: ", prev)
 		prev = prev.Next
-		fmt.Println("prev3: ", prev)
 	}
-	fmt.Println("head: ", head)
-	fmt.Println("head2: ", head.Next)
 	return head.Next
 }
 
 // My answer, not good
-func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
+func AddTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
 	var res []ListNode
 	var carryover int
 	for {
