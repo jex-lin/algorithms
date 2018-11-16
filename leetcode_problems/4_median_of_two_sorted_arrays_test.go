@@ -15,6 +15,7 @@ func TestFindMedianSortedArrays(t *testing.T) {
 	}{
 		{[]int{1, 3}, []int{2}, 2.0},
 		{[]int{1, 2}, []int{3, 4}, 2.5},
+		{[]int{}, []int{1}, 1},
 	}
 
 	for _, item := range list {
@@ -24,16 +25,38 @@ func TestFindMedianSortedArrays(t *testing.T) {
 }
 
 func FindMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	nums := make([]int, 0)
-	nums = append(nums, nums1...)
-	nums = append(nums, nums2...)
-	for i := 0; i < len(nums); i++ {
-		for j := 0; j < len(nums)-i-1; j++ {
-			if nums[j] > nums[j+1] {
-				nums[j], nums[j+1] = nums[j+1], nums[j]
+	nums := make([]int, len(nums1)+len(nums2))
+	var flag1, flag2 int
+	var end1, end2 bool
+	for i := 0; i < len(nums1)+len(nums2); i++ {
+		// fmt.Println(flag1, nums1[flag1], flag2, nums2[flag2])
+		if end1 || len(nums1) == 0 {
+			nums[i] = nums2[flag2]
+			flag2++
+			continue
+		}
+		if end2 || len(nums2) == 0 {
+			nums[i] = nums1[flag1]
+			flag1++
+			continue
+		}
+		if nums1[flag1] < nums2[flag2] {
+			nums[i] = nums1[flag1]
+			if flag1+1 < len(nums1) {
+				flag1++
+			} else {
+				end1 = true
+			}
+		} else {
+			nums[i] = nums2[flag2]
+			if flag2+1 < len(nums2) {
+				flag2++
+			} else {
+				end2 = true
 			}
 		}
 	}
+
 	if len(nums)%2 == 0 {
 		return float64(nums[len(nums)/2-1]+nums[len(nums)/2]) / float64(2)
 	}
