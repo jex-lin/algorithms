@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"sync"
 	"testing"
 
@@ -27,8 +28,8 @@ type BinarySearchTree struct {
 func TestBinarySearchTree(t *testing.T) {
 	t.Log("Test binary_search_tree")
 	list := []struct {
-		tree []Node
-		ans  string
+		tree       []Node
+		inOrderAns []string
 	}{
 		{
 			/*
@@ -50,23 +51,40 @@ func TestBinarySearchTree(t *testing.T) {
 				Node{key: 7, value: "7"},
 				Node{key: 9, value: "9"},
 			},
-			ans: "cczxvzxcv",
+			inOrderAns: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
 		},
 	}
 
 	for _, item := range list {
-		var tree BinarySearchTree
+		var bst BinarySearchTree
 		for _, node := range item.tree {
-			tree.Insert(node.key, node.value)
+			bst.Insert(node.key, node.value)
 		}
-		tree.String()
-		assert.Equal(t, tree.IsExisted(6), true)
+
+		// TODO Test level order
+
+		// Test inorder
+		var inOrderRes []string
+		bst.InOrderTraverse(func(v string) {
+			inOrderRes = append(inOrderRes, v)
+		})
+		assert.Equal(t, reflect.DeepEqual(inOrderRes, item.inOrderAns), true)
+
+		// TODO Test preorder
+
+		// TODO Test postorder
+
+		// Test remove and isExisted
+		assert.Equal(t, bst.IsExisted(6), true)
 		t.Log("remove 6")
-		tree.Remove(6)
-		assert.Equal(t, tree.IsExisted(6), false)
-		assert.Equal(t, tree.Min(), "1")
-		assert.Equal(t, tree.Max(), "10")
-		tree.String()
+		bst.Remove(6)
+		assert.Equal(t, bst.IsExisted(6), false)
+
+		// Test min
+		assert.Equal(t, bst.Min(), "1")
+
+		// Test Max
+		assert.Equal(t, bst.Max(), "10")
 	}
 }
 
@@ -188,6 +206,20 @@ func (bst *BinarySearchTree) Min() string {
 			return n.value
 		}
 		n = n.left
+	}
+}
+
+func (bst *BinarySearchTree) InOrderTraverse(f func(string)) {
+	bst.lock.RLock()
+	defer bst.lock.RUnlock()
+	inOrderTraverse(bst.root, f)
+}
+
+func inOrderTraverse(n *Node, f func(string)) {
+	if n != nil {
+		inOrderTraverse(n.left, f)
+		f(n.value)
+		inOrderTraverse(n.right, f)
 	}
 }
 
