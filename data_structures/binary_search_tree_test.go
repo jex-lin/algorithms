@@ -28,8 +28,11 @@ type BinarySearchTree struct {
 func TestBinarySearchTree(t *testing.T) {
 	t.Log("Test binary_search_tree")
 	list := []struct {
-		tree       []Node
-		inOrderAns []string
+		tree          []Node
+		inOrderAns    []string
+		preOrderAns   []string
+		postOrderAns  []string
+		levelOrderAns []string
 	}{
 		{
 			/*
@@ -51,7 +54,10 @@ func TestBinarySearchTree(t *testing.T) {
 				Node{key: 7, value: "7"},
 				Node{key: 9, value: "9"},
 			},
-			inOrderAns: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
+			inOrderAns:    []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
+			preOrderAns:   []string{"8", "4", "2", "1", "3", "6", "5", "7", "10", "9"},
+			postOrderAns:  []string{"1", "3", "2", "5", "7", "6", "4", "9", "10", "8"},
+			levelOrderAns: []string{"8", "4", "10", "2", "6", "9", "1", "3", "5", "7"},
 		},
 	}
 
@@ -61,28 +67,47 @@ func TestBinarySearchTree(t *testing.T) {
 			bst.Insert(node.key, node.value)
 		}
 
-		// TODO Test level order
+		// Test level order
+		t.Log("level-order")
+		var levelOrderRes []string
+		bst.LevelOrderTraverse(func(v string) {
+			levelOrderRes = append(levelOrderRes, v)
+		})
+		assert.Equal(t, reflect.DeepEqual(levelOrderRes, item.levelOrderAns), true)
 
 		// Test inorder
+		t.Log("in-order")
 		var inOrderRes []string
 		bst.InOrderTraverse(func(v string) {
 			inOrderRes = append(inOrderRes, v)
 		})
 		assert.Equal(t, reflect.DeepEqual(inOrderRes, item.inOrderAns), true)
 
-		// TODO Test preorder
+		//  Test preorder
+		t.Log("pre-order")
+		var preOrderRes []string
+		bst.PreOrderTraverse(func(v string) {
+			preOrderRes = append(preOrderRes, v)
+		})
+		assert.Equal(t, reflect.DeepEqual(preOrderRes, item.preOrderAns), true)
 
-		// TODO Test postorder
+		//  Test postorder
+		t.Log("post-order")
+		var postOrderRes []string
+		bst.PostOrderTraverse(func(v string) {
+			postOrderRes = append(postOrderRes, v)
+		})
+		assert.Equal(t, reflect.DeepEqual(postOrderRes, item.postOrderAns), true)
 
 		// Test remove and isExisted
+		t.Log("remove, isExisted")
 		assert.Equal(t, bst.IsExisted(6), true)
-		t.Log("remove 6")
 		bst.Remove(6)
 		assert.Equal(t, bst.IsExisted(6), false)
 
 		// Test min
+		t.Log("min, max")
 		assert.Equal(t, bst.Min(), "1")
-
 		// Test Max
 		assert.Equal(t, bst.Max(), "10")
 	}
@@ -209,9 +234,33 @@ func (bst *BinarySearchTree) Min() string {
 	}
 }
 
+func (bst *BinarySearchTree) LevelOrderTraverse(f func(string)) {
+	bst.lock.Lock()
+	defer bst.lock.Unlock()
+	levelOrderTraverse(bst.root, f)
+}
+
+func levelOrderTraverse(n *Node, f func(string)) {
+	var nodes []*Node
+	nodes = append(nodes, n)
+	for len(nodes) > 0 {
+		times := len(nodes)
+		for i := 0; i < times; i++ {
+			if nodes[i].left != nil {
+				nodes = append(nodes, nodes[i].left)
+			}
+			if nodes[i].right != nil {
+				nodes = append(nodes, nodes[i].right)
+			}
+			f(nodes[i].value)
+		}
+		nodes = nodes[times:]
+	}
+}
+
 func (bst *BinarySearchTree) InOrderTraverse(f func(string)) {
-	bst.lock.RLock()
-	defer bst.lock.RUnlock()
+	bst.lock.Lock()
+	defer bst.lock.Unlock()
 	inOrderTraverse(bst.root, f)
 }
 
@@ -220,6 +269,34 @@ func inOrderTraverse(n *Node, f func(string)) {
 		inOrderTraverse(n.left, f)
 		f(n.value)
 		inOrderTraverse(n.right, f)
+	}
+}
+
+func (bst *BinarySearchTree) PreOrderTraverse(f func(string)) {
+	bst.lock.Lock()
+	defer bst.lock.Unlock()
+	preOrderTraverse(bst.root, f)
+}
+
+func preOrderTraverse(n *Node, f func(string)) {
+	if n != nil {
+		f(n.value)
+		preOrderTraverse(n.left, f)
+		preOrderTraverse(n.right, f)
+	}
+}
+
+func (bst *BinarySearchTree) PostOrderTraverse(f func(string)) {
+	bst.lock.Lock()
+	defer bst.lock.Unlock()
+	postOrderTraverse(bst.root, f)
+}
+
+func postOrderTraverse(n *Node, f func(string)) {
+	if n != nil {
+		postOrderTraverse(n.left, f)
+		postOrderTraverse(n.right, f)
+		f(n.value)
 	}
 }
 
