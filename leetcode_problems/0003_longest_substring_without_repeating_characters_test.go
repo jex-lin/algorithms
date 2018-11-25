@@ -7,7 +7,7 @@ import (
 )
 
 func TestLengthOfLongestSubstring(t *testing.T) {
-	t.Log("Test 3_longest_substring_without_repeating_characters")
+	t.Log("Test 0003_longest_substring_without_repeating_characters")
 	list := []struct {
 		String string
 		Ans    int

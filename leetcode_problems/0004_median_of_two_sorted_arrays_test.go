@@ -7,7 +7,7 @@ import (
 )
 
 func TestFindMedianSortedArrays(t *testing.T) {
-	t.Log("Test 4_median_of_two_sorted_arrays_test")
+	t.Log("Test 0004_median_of_two_sorted_arrays_test")
 	list := []struct {
 		Nums1 []int
 		Nums2 []int

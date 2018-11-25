@@ -7,31 +7,33 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/* This struct is already defined in 102_binary_tree_level_order_traversal_test.go
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
 	Right *TreeNode
 }
+*/
 
-func TestLevelOrder(t *testing.T) {
-	t.Log("Test 102_binary_tree_level_order_traversal_test")
+func TestLevelOrderBottom(t *testing.T) {
+	t.Log("Test 0107_binary_tree_level_order_traversal_2_test")
 	list := []struct {
 		Tree TreeNode
 		Ans  [][]int
 	}{
 		{
 			TreeNode{3, &TreeNode{9, nil, nil}, &TreeNode{20, &TreeNode{15, nil, nil}, &TreeNode{7, nil, nil}}},
-			[][]int{[]int{3}, []int{9, 20}, []int{15, 7}},
+			[][]int{[]int{15, 7}, []int{9, 20}, []int{3}},
 		},
 	}
 
 	for _, item := range list {
-		assert.Equal(t, reflect.DeepEqual(levelOrder(&item.Tree), item.Ans), true)
+		assert.Equal(t, reflect.DeepEqual(levelOrderBottom(&item.Tree), item.Ans), true)
 	}
 }
 
 // BFS
-func levelOrder(root *TreeNode) [][]int {
+func levelOrderBottom(root *TreeNode) [][]int {
 	var ans [][]int
 	if root == nil {
 		return ans
@@ -54,5 +56,13 @@ func levelOrder(root *TreeNode) [][]int {
 		nodes = nodes[times:]
 		ans = append(ans, tmp)
 	}
-	return ans
+
+	return reverseOrder(ans)
+}
+
+func reverseOrder(ans [][]int) [][]int {
+	if len(ans) == 0 {
+		return ans
+	}
+	return append(reverseOrder(ans[1:]), ans[0])
 }

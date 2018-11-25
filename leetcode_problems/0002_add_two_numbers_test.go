@@ -13,7 +13,7 @@ type ListNode struct {
 }
 
 func TestAddTwoNumbers(t *testing.T) {
-	t.Log("Test 2_add_two_numbers_test")
+	t.Log("Test 0002_add_two_numbers_test")
 	list := []struct {
 		L1  ListNode
 		L2  ListNode

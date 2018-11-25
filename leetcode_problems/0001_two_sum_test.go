@@ -7,7 +7,7 @@ import (
 )
 
 func TestTwoSum(t *testing.T) {
-	t.Log("Test 1_two_sum_test")
+	t.Log("Test 0001_two_sum_test")
 	list := []struct {
 		Nums   []int
 		Target int

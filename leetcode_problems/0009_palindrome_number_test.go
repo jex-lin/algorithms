@@ -8,7 +8,7 @@ import (
 )
 
 func TestIsPalindrome(t *testing.T) {
-	t.Log("Test 9_palindrome_number_test")
+	t.Log("Test 0009_palindrome_number_test")
 	list := []struct {
 		Val int
 		Ans bool
