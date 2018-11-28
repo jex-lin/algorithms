@@ -30,7 +30,7 @@ func TestStackUsingSlice(t *testing.T) {
 		for range s.slice {
 			tmp = append(tmp, s.Pop())
 		}
-		assert.Equal(t, reflect.DeepEqual(tmp, item.ans), true)
+		assert.Equal(t, true, reflect.DeepEqual(tmp, item.ans))
 	}
 }
 

@@ -73,7 +73,7 @@ func TestBinarySearchTree(t *testing.T) {
 		bst.LevelOrderTraverse(func(v string) {
 			levelOrderRes = append(levelOrderRes, v)
 		})
-		assert.Equal(t, reflect.DeepEqual(levelOrderRes, item.levelOrderAns), true)
+		assert.Equal(t, true, reflect.DeepEqual(levelOrderRes, item.levelOrderAns))
 
 		// Test inorder
 		t.Log("in-order")
@@ -81,7 +81,7 @@ func TestBinarySearchTree(t *testing.T) {
 		bst.InOrderTraverse(func(v string) {
 			inOrderRes = append(inOrderRes, v)
 		})
-		assert.Equal(t, reflect.DeepEqual(inOrderRes, item.inOrderAns), true)
+		assert.Equal(t, true, reflect.DeepEqual(inOrderRes, item.inOrderAns))
 
 		//  Test preorder
 		t.Log("pre-order")
@@ -89,7 +89,7 @@ func TestBinarySearchTree(t *testing.T) {
 		bst.PreOrderTraverse(func(v string) {
 			preOrderRes = append(preOrderRes, v)
 		})
-		assert.Equal(t, reflect.DeepEqual(preOrderRes, item.preOrderAns), true)
+		assert.Equal(t, true, reflect.DeepEqual(preOrderRes, item.preOrderAns))
 
 		//  Test postorder
 		t.Log("post-order")
@@ -97,19 +97,19 @@ func TestBinarySearchTree(t *testing.T) {
 		bst.PostOrderTraverse(func(v string) {
 			postOrderRes = append(postOrderRes, v)
 		})
-		assert.Equal(t, reflect.DeepEqual(postOrderRes, item.postOrderAns), true)
+		assert.Equal(t, true, reflect.DeepEqual(postOrderRes, item.postOrderAns))
 
 		// Test remove and isExisted
 		t.Log("remove, isExisted")
-		assert.Equal(t, bst.IsExisted(6), true)
+		assert.Equal(t, true, bst.IsExisted(6))
 		bst.Remove(6)
-		assert.Equal(t, bst.IsExisted(6), false)
+		assert.Equal(t, false, bst.IsExisted(6))
 
 		// Test min
 		t.Log("min, max")
-		assert.Equal(t, bst.Min(), "1")
+		assert.Equal(t, "1", bst.Min())
 		// Test Max
-		assert.Equal(t, bst.Max(), "10")
+		assert.Equal(t, "10", bst.Max())
 	}
 }
 
