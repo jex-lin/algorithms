@@ -18,7 +18,7 @@ func TestLengthOfLongestSubstring(t *testing.T) {
 	}
 
 	for _, item := range list {
-		assert.Equal(t, LengthOfLongestSubstring(item.String), item.Ans)
+		assert.Equal(t, item.Ans, LengthOfLongestSubstring(item.String))
 	}
 }
 

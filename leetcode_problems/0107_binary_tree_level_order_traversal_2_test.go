@@ -28,7 +28,7 @@ func TestLevelOrderBottom(t *testing.T) {
 	}
 
 	for _, item := range list {
-		assert.Equal(t, reflect.DeepEqual(levelOrderBottom(&item.Tree), item.Ans), true)
+		assert.Equal(t, true, reflect.DeepEqual(levelOrderBottom(&item.Tree), item.Ans))
 	}
 }
 

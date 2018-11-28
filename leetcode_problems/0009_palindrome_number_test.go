@@ -24,7 +24,7 @@ func TestIsPalindrome(t *testing.T) {
 
 	for _, item := range list {
 		t.Log(item.Val)
-		assert.Equal(t, IsPalindrome(item.Val), item.Ans)
+		assert.Equal(t, item.Ans, IsPalindrome(item.Val))
 	}
 }
 

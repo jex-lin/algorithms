@@ -32,9 +32,9 @@ func TestAddTwoNumbers(t *testing.T) {
 		// fmt.Print("l2: ", item.L2)
 		// showList(&item.L2)
 		ans := AddTwoNumbers(&item.L1, &item.L2)
-		assert.Equal(t, ans.Val, item.Ans.Val)
-		assert.Equal(t, ans.Next.Val, item.Ans.Next.Val)
-		assert.Equal(t, ans.Next.Next.Val, item.Ans.Next.Next.Val)
+		assert.Equal(t, item.Ans.Val, ans.Val)
+		assert.Equal(t, item.Ans.Next.Val, ans.Next.Val)
+		assert.Equal(t, item.Ans.Next.Next.Val, ans.Next.Next.Val)
 	}
 }
 

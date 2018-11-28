@@ -18,7 +18,7 @@ func TestTwoSum(t *testing.T) {
 
 	for _, item := range list {
 		// t.Log("Nums: ", item.Nums)
-		assert.Equal(t, TwoSum(item.Nums, item.Target), item.Ans)
+		assert.Equal(t, item.Ans, TwoSum(item.Nums, item.Target))
 	}
 }
 

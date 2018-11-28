@@ -20,7 +20,7 @@ func TestFindMedianSortedArrays(t *testing.T) {
 
 	for _, item := range list {
 		// t.Log("num1: ", item.Num1, " num2:", item.Num2)
-		assert.Equal(t, FindMedianSortedArrays(item.Nums1, item.Nums2), item.Ans)
+		assert.Equal(t, item.Ans, FindMedianSortedArrays(item.Nums1, item.Nums2))
 	}
 }
 
