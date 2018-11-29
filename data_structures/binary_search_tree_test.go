@@ -13,22 +13,22 @@ import (
 // https://appliedgo.net/bintree/
 // insert and delete https://www.youtube.com/watch?v=wcIRPqTR3Kc
 
-type Node struct {
+type TreeNode struct {
 	key   int
 	value string
-	left  *Node
-	right *Node
+	left  *TreeNode
+	right *TreeNode
 }
 
 type BinarySearchTree struct {
-	root *Node
+	root *TreeNode
 	lock sync.RWMutex
 }
 
 func TestBinarySearchTree(t *testing.T) {
 	t.Log("Test binary_search_tree")
 	list := []struct {
-		tree          []Node
+		tree          []TreeNode
 		inOrderAns    []string
 		preOrderAns   []string
 		postOrderAns  []string
@@ -42,17 +42,17 @@ func TestBinarySearchTree(t *testing.T) {
 				   1 3   5 7
 
 			*/
-			tree: []Node{
-				Node{key: 8, value: "8"},
-				Node{key: 4, value: "4"},
-				Node{key: 10, value: "10"},
-				Node{key: 2, value: "2"},
-				Node{key: 6, value: "6"},
-				Node{key: 1, value: "1"},
-				Node{key: 3, value: "3"},
-				Node{key: 5, value: "5"},
-				Node{key: 7, value: "7"},
-				Node{key: 9, value: "9"},
+			tree: []TreeNode{
+				TreeNode{key: 8, value: "8"},
+				TreeNode{key: 4, value: "4"},
+				TreeNode{key: 10, value: "10"},
+				TreeNode{key: 2, value: "2"},
+				TreeNode{key: 6, value: "6"},
+				TreeNode{key: 1, value: "1"},
+				TreeNode{key: 3, value: "3"},
+				TreeNode{key: 5, value: "5"},
+				TreeNode{key: 7, value: "7"},
+				TreeNode{key: 9, value: "9"},
 			},
 			inOrderAns:    []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
 			preOrderAns:   []string{"8", "4", "2", "1", "3", "6", "5", "7", "10", "9"},
@@ -117,7 +117,7 @@ func TestBinarySearchTree(t *testing.T) {
 func (bst *BinarySearchTree) Insert(key int, value string) {
 	bst.lock.Lock()
 	defer bst.lock.Unlock()
-	n := &Node{key, value, nil, nil}
+	n := &TreeNode{key, value, nil, nil}
 	if bst.root == nil {
 		bst.root = n
 	} else {
@@ -125,7 +125,7 @@ func (bst *BinarySearchTree) Insert(key int, value string) {
 	}
 }
 
-func insertNode(node, newNode *Node) {
+func insertNode(node, newNode *TreeNode) {
 	if newNode.key < node.key {
 		if node.left == nil {
 			node.left = newNode
@@ -148,7 +148,7 @@ func (bst *BinarySearchTree) Remove(key int) {
 	removeNode(bst.root, key)
 }
 
-func removeNode(node *Node, key int) *Node {
+func removeNode(node *TreeNode, key int) *TreeNode {
 	if node == nil {
 		return nil
 	}
@@ -191,7 +191,7 @@ func (bst *BinarySearchTree) IsExisted(key int) bool {
 	return isExisted(bst.root, key)
 }
 
-func isExisted(n *Node, key int) bool {
+func isExisted(n *TreeNode, key int) bool {
 	if n == nil {
 		return false
 	}
@@ -240,8 +240,8 @@ func (bst *BinarySearchTree) LevelOrderTraverse(f func(string)) {
 	levelOrderTraverse(bst.root, f)
 }
 
-func levelOrderTraverse(n *Node, f func(string)) {
-	var nodes []*Node
+func levelOrderTraverse(n *TreeNode, f func(string)) {
+	var nodes []*TreeNode
 	nodes = append(nodes, n)
 	for len(nodes) > 0 {
 		times := len(nodes)
@@ -264,7 +264,7 @@ func (bst *BinarySearchTree) InOrderTraverse(f func(string)) {
 	inOrderTraverse(bst.root, f)
 }
 
-func inOrderTraverse(n *Node, f func(string)) {
+func inOrderTraverse(n *TreeNode, f func(string)) {
 	if n != nil {
 		inOrderTraverse(n.left, f)
 		f(n.value)
@@ -278,7 +278,7 @@ func (bst *BinarySearchTree) PreOrderTraverse(f func(string)) {
 	preOrderTraverse(bst.root, f)
 }
 
-func preOrderTraverse(n *Node, f func(string)) {
+func preOrderTraverse(n *TreeNode, f func(string)) {
 	if n != nil {
 		f(n.value)
 		preOrderTraverse(n.left, f)
@@ -292,7 +292,7 @@ func (bst *BinarySearchTree) PostOrderTraverse(f func(string)) {
 	postOrderTraverse(bst.root, f)
 }
 
-func postOrderTraverse(n *Node, f func(string)) {
+func postOrderTraverse(n *TreeNode, f func(string)) {
 	if n != nil {
 		postOrderTraverse(n.left, f)
 		postOrderTraverse(n.right, f)
@@ -309,7 +309,7 @@ func (bst *BinarySearchTree) String() {
 	fmt.Println("------------------------------------------------")
 }
 
-func stringify(n *Node, level int) {
+func stringify(n *TreeNode, level int) {
 	if n != nil {
 		format := ""
 		for i := 0; i < level; i++ {
