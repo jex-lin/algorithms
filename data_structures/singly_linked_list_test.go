@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"sync"
 	"testing"
 
@@ -24,9 +25,10 @@ type SinglyLinkedList struct {
 func TestSinglyLinkedList(t *testing.T) {
 	t.Log("Test singly_linked_list")
 	list := []struct {
-		nodes []int
+		nodes   []int
+		reverse []int
 	}{
-		{[]int{3, 9, 5, 4, 10, 8}},
+		{[]int{3, 9, 5, 4, 10, 8}, []int{8, 10, 4, 5, 9, 3}},
 	}
 
 	for _, item := range list {
@@ -40,6 +42,17 @@ func TestSinglyLinkedList(t *testing.T) {
 		q.Insert(5, 7)
 		q.RemoveAt(4)
 		assert.Equal(t, 4, q.IndexOf(7))
+	}
+
+	// Reverse
+	for _, item := range list {
+		var q SinglyLinkedList
+		assert.Equal(t, true, q.IsEmpty())
+		for _, i := range item.nodes {
+			q.Append(i)
+		}
+		q.Reverse()
+		assert.Equal(t, true, reflect.DeepEqual(q.Slice(), item.reverse))
 	}
 }
 
@@ -148,6 +161,39 @@ func (l *SinglyLinkedList) Size() int {
 		node = node.next
 	}
 	return j
+}
+
+func (l *SinglyLinkedList) Reverse() {
+	l.lock.Lock()
+	defer l.lock.Unlock()
+	if l.head == nil {
+		return
+	}
+
+	var previous *SinglyLinkedNode
+	current := l.head
+	next := l.head.next
+	current.next = nil
+	for next != nil {
+		previous, current, next = current, next, next.next
+		current.next = previous
+	}
+	l.head = current
+}
+
+func (l *SinglyLinkedList) Slice() []int {
+	l.lock.Lock()
+	defer l.lock.Unlock()
+	if l.head == nil {
+		return []int{}
+	}
+	var s []int
+	node := l.head
+	for node != nil {
+		s = append(s, node.value)
+		node = node.next
+	}
+	return s
 }
 
 func (l *SinglyLinkedList) String() {
