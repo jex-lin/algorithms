@@ -15,7 +15,7 @@ type Stack struct {
 	lock  sync.RWMutex
 }
 
-func TestStack(t *testing.T) {
+func TestStackUsingSlice(t *testing.T) {
 	t.Log("Test stack_using_slice")
 	list := []struct {
 		stack []int

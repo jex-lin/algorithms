@@ -15,8 +15,8 @@ type Queue struct {
 	lock  sync.RWMutex
 }
 
-func TestQueue(t *testing.T) {
-	t.Log("Test queue")
+func TestQueueUsingSlice(t *testing.T) {
+	t.Log("Test queue_using_slice")
 	list := []struct {
 		queue []int
 	}{
